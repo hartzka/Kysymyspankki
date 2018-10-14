@@ -1,0 +1,177 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Kysymykset</title>
+        <meta charset="utf-8" />
+                <style>
+h1 {
+    color: darkslateblue;
+    font-size: 250%;
+}
+.kysymyslinkki {
+    color: darkorange;
+    font-size: 150%;
+}
+p  {
+    color: red;
+    font-family: courier!important;
+    font-size: 160%;
+}
+.vaarin {
+    color: red;
+    font-size: 120%;
+    position: absolute;
+    left: 1100px !important;
+}
+.oikein {
+    color: green;
+    font-size: 120%;
+    position: absolute;
+    left: 1100px !important;
+}
+body {
+    background-color: #dddddd;
+}
+.btn-green {
+    background-color: #45622A;
+    border: 3px solid #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.4em;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.13), 0 3px 10px 0 rgba(0,0,0,0.11);
+}
+.btn-green:hover {
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 2px 6px 0 rgba(0,0,0,0.18);
+}
+
+.btn-blue {
+    background-color: #1255AA;
+    border: 3px solid #008CBA;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.7em;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.13), 0 3px 10px 0 rgba(0,0,0,0.11);
+}
+.btn-blue:hover {
+    background-color: #008CBA;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 2px 6px 0 rgba(0,0,0,0.18);
+}
+.btn-orange {
+    background-color: #DD9900;
+    border: 3px solid #FFA500;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.7em;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.13), 0 3px 10px 0 rgba(0,0,0,0.11);
+}
+.btn-orange:hover {
+    background-color: #FFA500;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 2px 6px 0 rgba(0,0,0,0.18);
+}
+.btn-poista {
+    background-color: #E33025;
+    border: 3px solid #F44336;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.2em;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.13), 0 3px 10px 0 rgba(0,0,0,0.11);
+}
+.btn-poista:hover {
+    background-color: #F4436;
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2), 0 2px 6px 0 rgba(0,0,0,0.18);
+}
+select {
+    font-size: 1.1em;
+    text-align-last:right;
+    padding-right: 29px;
+    direction: rtl;
+}
+.red {
+    background-color: red;
+}
+.red:hover {
+    background-color: red !important;
+}
+.green {
+    background-color: green;
+}
+.vastaus {
+    padding-left: 5px !important;
+}
+.input-field {
+    background-color: grey;
+    color: whitesmoke;
+    font-size: 1.3em;
+    position: relative;
+}
+.lista {
+    display:inline-block;
+}
+* {
+    text-align: center;
+    font-family: verdana;
+}
+</style>
+    </head>
+
+    <body>
+        <h1>Kysymykset</h1>
+        
+        <div
+            th:each="element : ${kysymykset}">
+        <h2 th:text="'Kurssi: ' + ${element.key}">kurssi</h2>
+        
+        <ul class="lista">
+            <li th:each="kysymys : ${element.value}">
+                <h3 th:text="'Aihe: ' + ${kysymys.aihe}">tt</h3>
+                <a th:href="@{~/vastaukset/muokkaus/{id}(id=${kysymys.id})}">
+                    <span class="kysymyslinkki" th:text="${kysymys.kysymysteksti}">Kyssari</span>
+                </a>
+                
+                <form th:action="@{~/kysymykset/muokkaus/delete/{id}(id=${kysymys.id})}" method="POST">
+                    <input class="btn-poista" type="submit" value="Poista"/>
+                </form>             
+                
+            </li>
+            </ul>
+      
+    </div>
+
+        <h2>Luo uusi kysymys</h2>
+
+        <form method="POST" action="/kysymykset/muokkaus/lisaa">
+            <p>Kurssi: <br/><input class="input-field" type="text" name="kurssi"/></p>
+            <p>Aihe: <br/><input class="input-field" type="text" name="aihe"/></p>
+            <p>Kysymysteksti: <br/><input class="input-field" type="text" name="kysymysteksti"/></p>
+            <input class="btn-green" type="submit" value="Luo"/>
+        </form>
+        
+        <br/>
+        <br/>
+        <form th:action="@{~/kysymykset}" method="GET">
+            <input type="submit"class="btn-orange" value="Muokkaustila pois"/>
+                </form> 
+    </body>
+</html>
