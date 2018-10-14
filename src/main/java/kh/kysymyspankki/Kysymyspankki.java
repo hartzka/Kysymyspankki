@@ -1,12 +1,15 @@
 
 package kh.kysymyspankki;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.HashMap;
-import kh.kysymykset.dao.KysymysDao;
-import kh.kysymykset.dao.VastausDao;
-import kh.kysymykset.database.Database;
-import kh.kysymykset.domain.Kysymys;
-import kh.kysymykset.domain.Vastaus;
+import java.util.Map;
+import kh.kysymyspankki.dao.KysymysDao;
+import kh.kysymyspankki.dao.VastausDao;
+import kh.kysymyspankki.database.Database;
+import kh.kysymyspankki.domain.Kysymys;
+import kh.kysymyspankki.domain.Vastaus;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -22,7 +25,7 @@ public class Kysymyspankki {
         VastausDao vas = new VastausDao(database);
         boolean muokkaus = true;
 
-        Spark.get("/kysymykset", (req, res) -> {
+        Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             
             map.put("kysymykset", kys.findAllByKurssi());
@@ -42,7 +45,7 @@ public class Kysymyspankki {
             Kysymys kysymys = new Kysymys(-1, req.queryParams("kurssi"), req.queryParams("aihe"), req.queryParams("kysymysteksti"));
             kys.saveOrUpdate(kysymys);
 
-            res.redirect("/kysymykset");
+            res.redirect("/");
             return "";
         });
         
@@ -118,9 +121,14 @@ public class Kysymyspankki {
         
         Spark.get("/vastaukset/tarkistus/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            Integer kysymysId = Integer.parseInt(req.params(":id"));
-            map.put("vastaukset", vas.findAll(kysymysId));
-            map.put("kysymys", kys.findOne(kysymysId));
+            Map<String, String> m = req.params();
+          
+            String kysymysId = m.get(":id");
+            
+                Integer kysym = Integer.parseInt(kysymysId);
+            map.put("vastaukset", vas.findAll(kysym));
+            map.put("kysymys", kys.findOne(kysym));
+            
             
             return new ModelAndView(map, "vastaukset_tarkistus");
         }, new ThymeleafTemplateEngine());

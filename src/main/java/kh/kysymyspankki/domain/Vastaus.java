@@ -1,4 +1,4 @@
-package kh.kysymykset.domain;
+package kh.kysymyspankki.domain;
 
 public class Vastaus {
 

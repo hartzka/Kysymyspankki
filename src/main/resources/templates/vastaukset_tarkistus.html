@@ -17,14 +17,28 @@ p  {
 .vaarin {
     color: red;
     font-size: 120%;
-    position: relative;
+   -webkit-flex-direction: column; 
+  -webkit-align-content: space-around; 
+  align-content: space-around; 
 
 }
 .oikein {
     color: green;
     font-size: 120%;
-    position: relative;
+    -webkit-align-content: space-around; 
+  align-content: space-around; 
     
+}
+.vastaus {
+    
+    font-size: 1.5em;
+    color: darkorange;
+    -webkit-align-content: space-around; 
+  align-content: space-around;
+}
+.lista {
+    display: inline;
+    width: 300px;
 }
 body {
     background-color: #dddddd;
@@ -96,11 +110,6 @@ select {
 .green {
     background-color: green;
 }
-.vastaus {
-    padding-left: 5px !important;
-    font-size: 1.5em;
-    color: darkorange;
-}
 .input-field {
     background-color: grey;
     color: whitesmoke;
@@ -108,9 +117,6 @@ select {
 }
 .kysymyssivu {
     font-size: 1.3em;
-}
-.lista {
-    display:inline-block;
 }
 * {
     text-align: center;
@@ -126,9 +132,10 @@ select {
         <h3><span th:text="'Aihe: ' + ${kysymys.aihe}">Aihe</span></h3>
         <ul class="lista">
             <li th:each="vastaus : ${vastaukset}">
-                <span class="vastaus" th:text="${vastaus.vastausteksti} + '  '"/> <b class="oikein" th:text="${vastaus.oikein}? 'Oikein' : ''" />
-                <b class="vaarin" th:text="${vastaus.oikein}? '' : 'Vaarin'" />
+                <span class="vastaus" th:text="${vastaus.vastausteksti} + '  '"/> 
                 
+                <b class="oikein" th:text="${vastaus.oikein}? 'Oikein' : ''" />
+                <b class="vaarin" th:text="${vastaus.oikein}? '' : 'Vaarin'" />
             </li>
         </ul>
 
@@ -150,7 +157,7 @@ select {
                 <input class="btn-green" type="submit" value="Luo"/></p>
             
         </form>
-        <a th:href="@{~/kysymykset}">
+        <a th:href="@{~/}">
                     <span class="kysymyssivu" th:text="Kysymyssivulle">Kysymyssivulle</span>
                 </a>
         <br/>

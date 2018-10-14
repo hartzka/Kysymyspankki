@@ -1,4 +1,4 @@
-package kh.kysymykset.dao;
+package kh.kysymyspankki.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import kh.kysymykset.database.Database;
-import kh.kysymykset.domain.Vastaus;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import kh.kysymyspankki.database.Database;
+import kh.kysymyspankki.domain.Vastaus;
 
 public class VastausDao implements Dao<Vastaus, Integer> {
 
@@ -32,12 +34,15 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             while (result.next()) {
                 vast.add(new Vastaus(result.getInt("id"), result.getInt("kysymys_id"), result.getString("vastausteksti"), result.getBoolean("oikein")));
             }
+        } catch (Exception ex) {
+            Logger.getLogger(VastausDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return vast;
     }
     
     public List<Vastaus> findAll(int kysymysid) throws SQLException {
+        
         List<Vastaus> vast = findAll();
         List<Vastaus> byKysymys = new ArrayList<>();
         for (Vastaus v : vast) {
@@ -64,6 +69,8 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             stmt.setString(2, object.getVastausteksti());
             stmt.setBoolean(3, object.getOikein());
             stmt.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(VastausDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
@@ -80,7 +87,10 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             }
 
             return new Vastaus(-1, result.getInt("kysymys_id"), result.getString("vastausteksti"), result.getBoolean("oikein"));
+        } catch (Exception ex) {
+            Logger.getLogger(VastausDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     @Override
@@ -89,10 +99,12 @@ public class VastausDao implements Dao<Vastaus, Integer> {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastaus WHERE id = ?");
             stmt.setInt(1, key);
             stmt.executeUpdate();
-    }
+    }   catch (Exception ex) {
+            Logger.getLogger(VastausDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-        public int findKysymysId(Integer key) throws SQLException {
+        public int findKysymysId(Integer key) throws SQLException, Exception {
             int kysymys_id = 0;
         
         try (Connection conn = database.getConnection()) {

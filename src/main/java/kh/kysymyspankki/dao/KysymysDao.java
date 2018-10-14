@@ -1,4 +1,4 @@
-package kh.kysymykset.dao;
+package kh.kysymyspankki.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import kh.kysymykset.database.Database;
-import kh.kysymykset.domain.Kysymys;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import kh.kysymyspankki.database.Database;
+import kh.kysymyspankki.domain.Kysymys;
 
 public class KysymysDao implements Dao<Kysymys, Integer> {
 
@@ -22,7 +24,8 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     public Kysymys findOne(Integer key) throws SQLException {
         return findAll().stream().filter(u -> u.getId().equals(key)).findFirst().get();
     }
-
+    
+    
     @Override
     public List<Kysymys> findAll() throws SQLException {
         List<Kysymys> kysymykset = new ArrayList<>();
@@ -33,6 +36,8 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
             while (result.next()) {
                 kysymykset.add(new Kysymys(result.getInt("id"), result.getString("kurssi"), result.getString("aihe"), result.getString("kysymysteksti")));
             }
+        } catch (Exception ex) {
+            Logger.getLogger(KysymysDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return kysymykset;
@@ -75,11 +80,7 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     @Override
     public Kysymys saveOrUpdate(Kysymys object) throws SQLException {
         
-        /*Kysymys byName = findByName(object.getKurssi());
-
-        if (byName != null) {
-            return byName;
-        }*/
+        
         if (object.getKurssi().equals("") || object.getAihe().equals("") || object.getKysymysteksti().equals("")) return null;
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kysymys (kurssi, aihe, kysymysteksti) VALUES (?, ?, ?)");
@@ -88,11 +89,18 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
             stmt.setString(3, object.getKysymysteksti());
             
             stmt.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(KysymysDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return findByName(object.getKysymysteksti());
+        try {
+            return findByName(object.getKysymysteksti());
+        } catch (Exception ex) {
+            Logger.getLogger(KysymysDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-    private Kysymys findByName(String name) throws SQLException {
+    private Kysymys findByName(String name) throws SQLException, Exception {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT id, kurssi, aihe, kysymysteksti FROM Kysymys WHERE kurssi = ?");
             stmt.setString(1, name);
@@ -112,7 +120,9 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kysymys WHERE id = ?");
             stmt.setInt(1, key);
             stmt.executeUpdate();
-    }
+    }   catch (Exception ex) {
+            Logger.getLogger(KysymysDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public HashMap<String, List<Kysymys>> findAllByKurssi() throws SQLException {

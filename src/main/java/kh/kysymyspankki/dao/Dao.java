@@ -1,4 +1,4 @@
-package kh.kysymykset.dao;
+package kh.kysymyspankki.dao;
 
 import java.sql.*;
 import java.util.*;
