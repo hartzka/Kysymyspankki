@@ -43,41 +43,7 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
         return kysymykset;
     }
 
-    /*public List<Kysymys> findNonCompletedForUser(Integer vastusId) throws SQLException {
-        String query = "SELECT Task.id, Task.name FROM Task, TaskAssignment\n"
-                + "              WHERE Task.id = TaskAssignment.task_id "
-                + "                  AND TaskAssignment.user_id = ?\n"
-                + "                  AND TaskAssignment.completed = 0";
-
-        List<Kysymys> tasks = new ArrayList<>();
-
-        try (Connection conn = database.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, userId);
-            ResultSet result = stmt.executeQuery();
-
-            while (result.next()) {
-                tasks.add(new Kysymys(result.getInt("id"), result.getString("name")));
-            }
-        }
-
-        return tasks;
-    }*/
-
-    /*public List<Kysymys> findAllNotAssigned() throws SQLException {
-        List<Kysymys> tasks = new ArrayList<>();
-
-        try (Connection conn = database.getConnection();
-                ResultSet result = conn.prepareStatement("SELECT id, name FROM Task WHERE id NOT IN (SELECT task_id FROM TaskAssignment)").executeQuery()) {
-
-            while (result.next()) {
-                tasks.add(new Kysymys(result.getInt("id"), result.getString("name")));
-            }
-        }
-        return tasks;
-    }*/
-
-    @Override
+        @Override
     public Kysymys saveOrUpdate(Kysymys object) throws SQLException {
         
         

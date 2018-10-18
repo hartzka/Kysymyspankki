@@ -14,30 +14,52 @@ p  {
     font-family: courier!important;
     font-size: 160%;
 }
-.vaarin {
+.ohje {
+    color: goldenrod;
+    font-family: roboto!important;
+    font-size: 110%;
+}
+.ohjeruutu {
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.vaarin_vaittama {
     color: red;
     font-size: 120%;
-   -webkit-flex-direction: column; 
-  -webkit-align-content: space-around; 
-  align-content: space-around; 
+   position: absolute;
+   padding-left: 600px;
 
 }
-.oikein {
+.oikein_vaittama {
     color: green;
     font-size: 120%;
-    -webkit-align-content: space-around; 
-  align-content: space-around; 
+    position: absolute;
+   padding-left: 600px;
+    
+}
+.vaarin_vastattu {
+    color: red;
+    font-size: 120%;
+   position: absolute;
+   padding-left: 700px;
+}
+.oikein_vastattu {
+    color: green;
+    font-size: 120%;
+    position: absolute;
+   padding-left: 700px;
     
 }
 .vastaus {
     
     font-size: 1.5em;
     color: darkorange;
-    -webkit-align-content: space-around; 
-  align-content: space-around;
+    position: absolute;
+   padding-left: 300px;
 }
 .lista {
-    display: inline;
+    display: block;
     width: 300px;
 }
 body {
@@ -115,6 +137,10 @@ select {
     color: whitesmoke;
     font-size: 1.6em;
 }
+.disabled_checkbox {
+    position: absolute;
+    padding-left: 650px !important; 
+}
 .kysymyssivu {
     font-size: 1.3em;
 }
@@ -131,17 +157,20 @@ select {
         <h3><span th:text="'Kurssi: ' + ${kysymys.kurssi}">Kurssi</span></h3>
         <h3><span th:text="'Aihe: ' + ${kysymys.aihe}">Aihe</span></h3>
         <ul class="lista">
-            <li th:each="vastaus : ${vastaukset}">
+            <li th:each="vastaus,status : ${vastaukset}">
                 <span class="vastaus" th:text="${vastaus.vastausteksti} + '  '"/> 
                 
-                <b class="oikein" th:text="${vastaus.oikein}? 'Oikein' : ''" />
-                <b class="vaarin" th:text="${vastaus.oikein}? '' : 'Vaarin'" />
+                <b class="oikein_vaittama" th:text="${vastaus.oikein}? 'Oikein' : ''" />
+                <b class="vaarin_vaittama" th:text="${vastaus.oikein}? '' : 'Vaarin'" />
+                <b class="oikein_vastattu" th:text="${checkatut[status.count]}==${vastaus.oikein}? 'Vastasit oikein' : ''"/>
+                <b class="vaarin_vastattu" th:text="${checkatut[status.count]}!=${vastaus.oikein}? 'Pieleen meni' : ''"/>
+                <input class="disabled_checkbox" type="checkbox" th:checked="${checkatut[status.count]}" disabled="true" />
             </li>
         </ul>
 
         <h2>Luo uusi vastaus</h2>
 
-        <form method="POST" th:action="@{~/vastaukset/tarkistus/lisaa/{id}(id=${kysymys.id})}">
+        <form method="POST" th:action="@{~/vastaukset/lisaa/{id}(id=${kysymys.id})}">
             <p>Vastausteksti:
                 <br/><input class="input-field" type="text" name="vastausteksti" /></p><br/>
             <p> Oikein:
@@ -167,6 +196,11 @@ select {
                 </form> 
         <form th:action="@{~/vastaukset/muokkaus/{id}(id=${kysymys.id})}" method="GET">
             <input class="btn-blue" type="submit" value="Muokkaustila"/>
-                </form> 
+                </form><br/><br/>
+            <div class="ohjeruutu">
+                <p class="ohje">Näet nyt vastauksesi, oikeat ja väärät väittämät ja oikein menneet vastauksesi.</p> 
+                <p class="ohje">Muokkaustilaan pääset Muokkaustila-painikkeesta, jolloin voit poistaa vastauksia.</p> 
+                <p class="ohje">Pääset normaalitilaan Tarkistus pois -painikkeesta.</p> 
+                </div>
     </body>
 </html>

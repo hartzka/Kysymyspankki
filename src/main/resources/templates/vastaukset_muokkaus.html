@@ -14,6 +14,16 @@ p  {
     font-family: courier!important;
     font-size: 160%;
 }
+.ohje {
+    color: goldenrod;
+    font-family: roboto!important;
+    font-size: 110%;
+}
+.ohjeruutu {
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
 .vaarin {
     color: red;
     font-size: 120%;
@@ -174,11 +184,13 @@ select {
                 </a>
         <br/>
             <br/>
-            <form th:action="@{~/vastaukset/tarkistus/{id}(id=${kysymys.id})}" method="GET">
-            <input class="btn-orange" type="submit" value="Tarkista vastaukset"/>
-                </form> 
-        <form th:action="@{~/vastaukset/{id}(id=${kysymys.id})}" method="GET">
+            <form th:action="@{~/vastaukset/{id}(id=${kysymys.id})}" method="GET">
             <input class="btn-blue" type="submit" value="Muokkaustila pois"/>
-                </form> 
+                </form> <br/><br/>
+            <div class="ohjeruutu">
+                <p class="ohje">Voit nyt poistaa vastausvaihtoehtoja poista-painikkeista.</p> 
+                <p class="ohje">Normaalitilaan pääset Muokkaustila pois -painikkeesta.</p> 
+                <p class="ohje">Uuden vastausvaihtoehdon saat luotua syöttämällä vastaustekstin tekstikenttään, määrittämällä, onko vastus oikein vai ei ja painamalla Luo-painiketta.</p> 
+                </div>
     </body>
 </html>

@@ -18,6 +18,16 @@ p  {
     font-family: courier!important;
     font-size: 160%;
 }
+.ohje {
+    color: goldenrod;
+    font-family: roboto!important;
+    font-size: 110%;
+}
+.ohjeruutu {
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
 .vaarin {
     color: red;
     font-size: 120%;
@@ -172,6 +182,11 @@ select {
         <br/>
         <form th:action="@{~/}" method="GET">
             <input type="submit"class="btn-orange" value="Muokkaustila pois"/>
-                </form> 
+                </form> <br/><br/>
+        <div class="ohjeruutu">
+                <p class="ohje">Ohje: Näet nyt kysymykset kurssin ja aiheen mukaan järjestettyinä. Pääset tarkastelemaan kysymystä klikkaamalla sen linkkiä.</p> 
+                <p class="ohje">Voit poistaa kysymyksiä Poista-painikkeista. Pääset normaalitilaan Muokkaustila pois -painikkeesta.</p> 
+                <p class="ohje">Uuden kysymyksen saat luotua syöttämällä kurssin, aiheen ja kysymystekstin tekstikenttiin ja painamalla Luo-painiketta.</p> 
+                </div>
     </body>
 </html>

@@ -1,10 +1,9 @@
 
 package kh.kysymyspankki;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import kh.kysymyspankki.dao.KysymysDao;
 import kh.kysymyspankki.dao.VastausDao;
 import kh.kysymyspankki.database.Database;
@@ -122,24 +121,42 @@ public class Kysymyspankki {
         Spark.get("/vastaukset/tarkistus/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             Map<String, String> m = req.params();
-          
             String kysymysId = m.get(":id");
+            
+            Set<String> s = req.queryParams();
+            
+            HashMap<Integer, Boolean> checkatut = new HashMap<>();
+            
+            for(String arvo:s) {
+                int i = arvo.length() -1;
+                while (true) {
+                    String a = (arvo.substring(i, i+1));
+                    if (!a.equals("1") && !a.equals("2") && !a.equals("3") && !a.equals("4") && !a.equals("5") && !a.equals("6") && !a.equals("7") && !a.equals("8") && !a.equals("9") && !a.equals("0")) {
+                        break;
+                    }
+                    i--;
+                }
+                i++;
+                int ind = Integer.parseInt(arvo.substring(i, arvo.length()));
+                if(arvo.contains("ei") && checkatut.get(ind) == null)  checkatut.put(ind, false);
+                else checkatut.put(ind, true);
+            }
             
                 Integer kysym = Integer.parseInt(kysymysId);
             map.put("vastaukset", vas.findAll(kysym));
             map.put("kysymys", kys.findOne(kysym));
-            
+            map.put("checkatut", checkatut);
             
             return new ModelAndView(map, "vastaukset_tarkistus");
         }, new ThymeleafTemplateEngine());
+       
         
         Spark.get("/vastaukset/muokkaus/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             Integer kysymysId = Integer.parseInt(req.params(":id"));
             map.put("vastaukset", vas.findAll(kysymysId));
             map.put("kysymys", kys.findOne(kysymysId));
-            //map.put("kysymykset", kys.findNonCompletedForUser(vastausId));
-
+           
             return new ModelAndView(map, "vastaukset_muokkaus");
         }, new ThymeleafTemplateEngine());
 

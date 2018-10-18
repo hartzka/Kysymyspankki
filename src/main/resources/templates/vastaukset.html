@@ -14,6 +14,16 @@ p  {
     font-family: courier!important;
     font-size: 160%;
 }
+.ohje {
+    color: goldenrod;
+    font-family: roboto!important;
+    font-size: 110%;
+}
+.ohjeruutu {
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
 .vaarin {
     color: red;
     font-size: 120%;
@@ -124,12 +134,17 @@ select {
 
         <h3><span th:text="'Kurssi: ' + ${kysymys.kurssi}">Kurssi</span></h3>
         <h3><span th:text="'Aihe: ' + ${kysymys.aihe}">Aihe</span></h3>
+        <form th:action="@{~/vastaukset/tarkistus/{id}(id=${kysymys.id})}" method="GET">
         <ul class="lista">
-            <li th:each="vastaus : ${vastaukset}">
+            <li th:each="vastaus,status : ${vastaukset}">
+                <input type="hidden" th:name="'eivalittu' + ${status.count}" th:value="${status.count}" />
+                    <input type="checkbox" th:name="'valittu' + ${status.count}" th:value="${status.count}" />
                 <span class="vastaus" th:text="${vastaus.vastausteksti} + '  '"/>
-                
+                    
             </li>
         </ul>
+            <br/><input class="btn-orange" type="submit" value="Tarkista vastaukset" th:disabled="${vastaukset.empty}"/>
+            </form>
 
         <h2>Luo uusi vastaus</h2>
 
@@ -154,11 +169,14 @@ select {
                 </a>
         <br/>
             <br/>
-            <form th:action="@{~/vastaukset/tarkistus/{id}(id=${kysymys.id})}" method="GET">
-            <input class="btn-orange" type="submit" value="Tarkista vastaukset"/>
-            </form>
+            
         <form th:action="@{~/vastaukset/muokkaus/{id}(id=${kysymys.id})}" method="GET">
             <input class="btn-blue" type="submit" value="Muokkaustila"/>
-                </form> 
+                </form><br/><br/> 
+                <div class="ohjeruutu">
+                <p class="ohje">Ohje: Voit testata osaamistasi klikkaamalla mielestäsi oikeiden vastausvaihtoehtojen vieressä olevia ruutuja ja painamalla Tarkista-painiketta.</p> 
+                <p class="ohje">Muokkaustilaan pääset Muokkaustila-painikkeesta, jolloin voit poistaa vastauksia.</p> 
+                <p class="ohje">Uuden vastausvaihtoehdon saat luotua syöttämällä vastaustekstin tekstikenttään, määrittämällä, onko vastus oikein vai ei ja painamalla Luo-painiketta.</p> 
+                </div>
     </body>
 </html>
