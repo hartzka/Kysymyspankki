@@ -28,27 +28,27 @@ p  {
     color: red;
     font-size: 120%;
    position: absolute;
-   padding-left: 600px;
+   padding-left: 500px;
 
 }
 .oikein_vaittama {
     color: green;
     font-size: 120%;
     position: absolute;
-   padding-left: 600px;
+   padding-left: 500px;
     
 }
 .vaarin_vastattu {
     color: red;
     font-size: 120%;
    position: absolute;
-   padding-left: 700px;
+   padding-left: 600px;
 }
 .oikein_vastattu {
     color: green;
     font-size: 120%;
     position: absolute;
-   padding-left: 700px;
+   padding-left: 600px;
     
 }
 .vastaus {
@@ -56,7 +56,7 @@ p  {
     font-size: 1.5em;
     color: darkorange;
     position: absolute;
-   padding-left: 300px;
+   padding-left: 230px;
 }
 .lista {
     display: block;
@@ -161,7 +161,7 @@ select {
                 <span class="vastaus" th:text="${vastaus.vastausteksti} + '  '"/> 
                 
                 <b class="oikein_vaittama" th:text="${vastaus.oikein}? 'Oikein' : ''" />
-                <b class="vaarin_vaittama" th:text="${vastaus.oikein}? '' : 'Vaarin'" />
+                <b class="vaarin_vaittama" th:text="${vastaus.oikein}? '' : 'Väärin'" />
                 <b class="oikein_vastattu" th:text="${checkatut[status.count]}==${vastaus.oikein}? 'Vastasit oikein' : ''"/>
                 <b class="vaarin_vastattu" th:text="${checkatut[status.count]}!=${vastaus.oikein}? 'Pieleen meni' : ''"/>
                 <input class="disabled_checkbox" type="checkbox" th:checked="${checkatut[status.count]}" disabled="true" />
